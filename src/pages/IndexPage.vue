@@ -27,7 +27,7 @@ import Filters from 'src/components/Filters.vue'
 import Schedule from 'src/components/Schedule.vue'
 
 import { ref } from 'vue'
-import { api } from 'boot/axios'
+import { api } from 'src/boot/axios'
 
 const selectedDate = ref(new Date())
 const sessions = ref([])

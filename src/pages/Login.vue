@@ -67,8 +67,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { useCoreStore } from '@/stores/core.js'
+import { useCoreStore } from 'src/stores/core.js'
+import { useRouter } from 'vue-router'
+
 const $q = useQuasar()
+const router = useRouter()
 
 // Reactive data
 const email = ref('edwyn@gmail.com')
@@ -94,17 +97,19 @@ const handleLogin = async () => {
 
     // await authStore.login(email.value, password.value)
 
-    const response = await coreStore.login({
+    await coreStore.login({
       email: email.value,
       password: password.value
     })
-    console.log('Respuesta de login:', response)
+
     // Mostrar notificación de éxito
     $q.notify({
       type: 'positive',
       message: '¡Inicio de sesión exitoso!',
       position: 'top'
     })
+
+    router.push('/')
 
     // Redirigir a la página principal
     // navigateTo('/')

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { api } from '@/boot/api'
+import { api } from 'src/boot/axios'
 
 export const useCoreStore = defineStore('core', {
   state: () => ({
@@ -15,19 +15,17 @@ export const useCoreStore = defineStore('core', {
       this.user = userData ? JSON.parse(userData) : null
     },
 
-    async login(email, password) {
-      const data = await api.get(`/token/`, {
-        method: 'POST',
-        body: { email, password },
-      })
+    async login(credentials) {
+      console.log('Logging in with', credentials)
+      const response = await api.post(`/token/`, credentials)
+      console.log(response.data)
+      this.token = response.data.access
+      this.refreshToken = response.data.refresh
+      this.user = response.data.user
 
-      this.token = data.access
-      this.refreshToken = data.refresh
-      this.user = data.user
-
-      localStorage.setItem('refresh', data.refresh)
-      localStorage.setItem('token', data.access)
-      localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem('refresh', response.data.refresh)
+      localStorage.setItem('token', response.data.access)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
     },
 
     logout() {

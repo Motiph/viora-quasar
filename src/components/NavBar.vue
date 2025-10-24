@@ -15,7 +15,9 @@
         <q-btn flat label="Tienda" to="#" text-color="black" />
         <q-btn flat label="Servicios" to="#" text-color="black" />
         <q-btn flat label="Reservar" to="/reservar" text-color="black" />
-        <q-btn flat label="Cuenta" to="/cuenta" text-color="black" />
+        <q-btn v-if="!coreStore.user" flat label="Entrar" to="/login" text-color="black" />
+        <q-btn v-if="!coreStore.user" flat label="Registrarse" to="/register" text-color="black" />
+        <q-btn v-if="coreStore.user" flat label="Cuenta" to="/cuenta" text-color="black" />
       </div>
     </q-toolbar>
 
@@ -41,6 +43,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useCoreStore } from 'src/stores/core'
+
+const coreStore = useCoreStore()
 
 const isOpen = ref(false)
 
