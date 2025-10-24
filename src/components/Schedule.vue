@@ -87,6 +87,9 @@ import { useQuasar } from 'quasar'
 
 import SessionModal from 'src/components/SessionModal.vue'
 
+import { Browser } from '@capacitor/browser'
+import { Capacitor } from '@capacitor/core'
+
 defineProps({
   currentDate: {
     type: [Date, String],
@@ -186,7 +189,27 @@ const payReservation = async (session) => {
     reservation.value = data.data
     startCountdown()
     startPolling()
-    window.open(data.pay.url, '_blank')
+
+    // abrir link según plataforma
+    // if (Capacitor.isNativePlatform()) {
+    //   await Browser.open({ url: data.pay.url })
+    // } else {
+    //   window.open(data.pay.url, '_blank')
+    // }
+
+    if (Capacitor.getPlatform() === 'android' || Capacitor.getPlatform() === 'ios') {
+      try {
+        await Browser.open({ url: data.pay.url })
+      } catch (e) {
+        console.log('No se pudo abrir en el emulador, prueba en un dispositivo real', e)
+        // fallback para testing
+        window.open(data.pay.url, '_blank')
+      }
+    } else {
+      window.open(data.pay.url, '_blank')
+    }
+
+    // window.open(data.pay.url, '_blank')
 
     console.log(data)
   } catch (err) {
