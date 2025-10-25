@@ -199,7 +199,7 @@ const payReservation = async (session) => {
 
     if (Capacitor.getPlatform() === 'android' || Capacitor.getPlatform() === 'ios') {
       try {
-        await Browser.open({ url: data.pay.url })
+        await Browser.open({ url: data.pay.url, presentationStyle: 'popover' })
       } catch (e) {
         console.log('No se pudo abrir en el emulador, prueba en un dispositivo real', e)
         // fallback para testing
